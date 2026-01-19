@@ -1,0 +1,18 @@
+# Python / Django
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+.venv/
+
+# Database
+db.sqlite3
+
+# Media / uploads
+media/
+posters/
+
+# IDE
+.idea/
+.vscode/gi

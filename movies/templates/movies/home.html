@@ -1,0 +1,16 @@
+{% extends "movies/base.html" %}
+
+{% block title %}Home | MovieSite{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="mb-4">Καλώς ήρθατε στο MovieSite 🎬</h1>
+    <p class="lead">
+        Ανακαλύψτε ταινίες, σκηνοθέτες και αξιολογήσεις IMDb.
+    </p>
+
+    <a href="{% url 'movies:movie_list' %}" class="btn btn-primary btn-lg mt-3">
+        Δείτε τις ταινίες
+    </a>
+</div>
+{% endblock %}

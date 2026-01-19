@@ -1,0 +1,43 @@
+{% extends "movies/base.html" %}
+{% load static %}
+
+{% block title %}{{ movie.title }} | MovieSite{% endblock %}
+
+{% block content %}
+<a href="{% url 'movies:movie_list' %}" class="btn btn-outline-secondary mb-3">← Πίσω</a>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        {% if movie.poster %}
+            <img src="{{ movie.poster.url }}" class="img-fluid rounded" alt="{{ movie.title }}">
+        {% else %}
+            <div class="border rounded p-5 text-center bg-light">No poster</div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-8">
+        <h2>{{ movie.title }}</h2>
+        <p class="text-muted">
+            {{ movie.genre.name }} • {{ movie.director }} • {{ movie.duration_minutes }} λεπτά
+        </p>
+
+        {% if movie.imdb_rating %}
+            <p>IMDb Rating: <strong>{{ movie.imdb_rating }}</strong></p>
+        {% endif %}
+
+        {% if movie.synopsis %}
+            <h5>Περίληψη</h5>
+            <p>{{ movie.synopsis }}</p>
+        {% endif %}
+
+        {% if movie.review_text %}
+            <h5>Κριτική</h5>
+            <p>{{ movie.review_text }}</p>
+        {% endif %}
+
+        {% if movie.imdb_url %}
+            <a class="btn btn-primary" target="_blank" href="{{ movie.imdb_url }}">Άνοιγμα IMDb</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

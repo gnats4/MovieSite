@@ -1,0 +1,90 @@
+{% extends "movies/base.html" %}
+{% load static %}
+
+{% block title %}Movies | MovieSite{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Ταινίες</h2>
+
+<form method="get" class="card card-body mb-4">
+    <div class="row g-3 align-items-end">
+
+        <div class="col-md-4">
+            <label class="form-label">Αναζήτηση</label>
+            <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Τίτλος ή περίληψη...">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Είδος</label>
+            <select name="genre" class="form-select" id="genreSelect">
+                <option value="">Όλα</option>
+                {% for g in genres %}
+                    <option value="{{ g.id }}" {% if genre_id == g.id|stringformat:"s" %}selected{% endif %}>
+                        {{ g.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Σκηνοθέτης</label>
+            <select name="director" class="form-select" id="directorSelect">
+                <option value="">Όλοι</option>
+                {% for d in directors %}
+                    <option value="{{ d.id }}" {% if director_id == d.id|stringformat:"s" %}selected{% endif %}>
+                        {{ d.first_name }} {{ d.last_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label">Ταξινόμηση</label>
+            <select name="sort" class="form-select" id="sortSelect">
+                <option value="title" {% if sort == "title" %}selected{% endif %}>A–Z</option>
+                <option value="imdb" {% if sort == "imdb" %}selected{% endif %}>IMDb (↓)</option>
+            </select>
+        </div>
+
+        <div class="col-12 d-flex gap-2">
+            <button class="btn btn-primary" type="submit">Εφαρμογή</button>
+            <a class="btn btn-outline-secondary" href="{% url 'movies:movie_list' %}">Καθαρισμός</a>
+        </div>
+    </div>
+</form>
+
+{% if movies %}
+<div class="row g-4">
+    {% for movie in movies %}
+    <div class="col-sm-6 col-md-4 col-lg-3 movie-card">
+        <div class="card h-100">
+            {% if movie.poster %}
+                <img src="{{ movie.poster.url }}" class="card-img-top" alt="{{ movie.title }}">
+            {% else %}
+                <img src="{% static 'movies/img/no-poster.png' %}" class="card-img-top" alt="No poster">
+            {% endif %}
+
+            <div class="card-body">
+                <h5 class="card-title">{{ movie.title }}</h5>
+                <p class="card-text small text-muted mb-1">
+                    {{ movie.genre.name }} • {{ movie.director }}
+                </p>
+                {% if movie.imdb_rating %}
+                    <p class="mb-0">IMDb: <strong>{{ movie.imdb_rating }}</strong></p>
+                {% endif %}
+            </div>
+
+            <div class="card-footer bg-white border-0">
+                <a href="{% url 'movies:movie_detail' movie.id %}" class="btn btn-sm btn-dark w-100">
+                    Λεπτομέρειες
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>Δεν βρέθηκαν ταινίες.</p>
+{% endif %}
+
+{% endblock %}
