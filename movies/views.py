@@ -1,6 +1,8 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 from .models import Movie, Genre, Director
+from django.core.paginator import Paginator
+
 
 
 def home(request):
@@ -31,8 +33,13 @@ def movie_list(request):
     else:
         movies = movies.order_by("title")
 
+    paginator = Paginator(movies, 1)  # 8 ταινίες ανά σελίδα
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        "movies": movies,
+        "page_obj": page_obj,
+        "movies": page_obj,  # για να δουλεύει όπως πριν το template σου
         "genres": Genre.objects.all().order_by("name"),
         "directors": Director.objects.all().order_by("last_name", "first_name"),
         "q": q,

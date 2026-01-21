@@ -51,6 +51,41 @@
             <a class="btn btn-outline-secondary" href="{% url 'movies:movie_list' %}">Καθαρισμός</a>
         </div>
     </div>
+    {% if page_obj.paginator.num_pages >= 1 %}
+    <nav class="mt-4">
+      <ul class="pagination justify-content-center">
+
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link"
+               href="?q={{ q }}&genre={{ genre_id }}&director={{ director_id }}&sort={{ sort }}&page={{ page_obj.previous_page_number }}">
+              « Προηγούμενη
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">« Προηγούμενη</span></li>
+        {% endif %}
+
+        <li class="page-item disabled">
+          <span class="page-link">
+            Σελίδα {{ page_obj.number }} από {{ page_obj.paginator.num_pages }}
+          </span>
+        </li>
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link"
+               href="?q={{ q }}&genre={{ genre_id }}&director={{ director_id }}&sort={{ sort }}&page={{ page_obj.next_page_number }}">
+              Επόμενη »
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">Επόμενη »</span></li>
+        {% endif %}
+
+      </ul>
+    </nav>
+    {% endif %}
 </form>
 
 {% if movies %}
