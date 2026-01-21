@@ -1,5 +1,6 @@
 {% extends "movies/base.html" %}
 {% load static %}
+{% load ratings %}
 
 {% block title %}Movies | MovieSite{% endblock %}
 
@@ -105,12 +106,21 @@
                     {{ movie.genre.name }} • {{ movie.director }}
                 </p>
                 {% if movie.imdb_rating %}
-                    <p class="mb-0">IMDb: <strong>{{ movie.imdb_rating }}</strong></p>
+                    {% with s=movie.imdb_rating|stars_from_10 %}
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="text-warning">
+                            {% for _ in ""|ljust:s.full %}★{% endfor %}
+                            {% if s.half %}½{% endif %}
+                            {% for _ in ""|ljust:s.empty %}☆{% endfor %}
+                        </div>
+                    <small class="text-muted">{{ movie.imdb_rating|floatformat:1 }}/10</small>
+                    </div>
+                {% endwith %}
                 {% endif %}
             </div>
 
             <div class="card-footer bg-white border-0">
-                <a href="{% url 'movies:movie_detail' movie.id %}" class="btn btn-sm btn-dark w-100">
+                <a href="{% url 'movies:movie_detail' movie.id %}" class="btn btn-dark">
                     Λεπτομέρειες
                 </a>
             </div>
